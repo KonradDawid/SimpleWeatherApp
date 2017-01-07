@@ -19,6 +19,11 @@
 
 @implementation NetworkingClient
 
+typedef NS_ENUM(NSInteger, ResourceType) {
+    ResourceTypeJson,
+    ResourceTypeImage
+};
+
 + (instancetype)sharedClient {
     static NetworkingClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
@@ -36,13 +41,13 @@
     return self;
 }
 
--(void)doGet:(NSURL*)url success:(void(^)(NSURLResponse* response, NSData* data))successBlock andFailure:(void(^)(NSURLResponse* response, NSError* error))failureBlock {
+-(void)doGet:(NSURL*)url resourceType:(ResourceType)resourceType success:(void(^)(NSURLResponse* response, NSData* data))successBlock andFailure:(void(^)(NSURLResponse* response, NSError* error))failureBlock {
     
     NSMutableURLRequest* request = [NSMutableURLRequest requestWithURL: url];
     request.HTTPMethod = @"GET";
     
-    [request addValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
-    [request addValue:@"application/json" forHTTPHeaderField:@"Accept"];
+    NSString *acceptHeaderValue = (resourceType == ResourceTypeImage) ? @"image/*": @"application/json";
+    [request addValue:acceptHeaderValue forHTTPHeaderField:@"Accept"];
     
     NSURLSessionDataTask* dataTask = [self.session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
         
@@ -82,7 +87,7 @@
     
     NSURL *url = [self urlForWeatherIconName:weatherIconName];
     
-    [self doGet:url success:^(NSURLResponse *response, NSData *data) {
+    [self doGet:url resourceType:ResourceTypeImage success:^(NSURLResponse *response, NSData *data) {
         UIImage *image = [UIImage imageWithData:data];
         
         if (image == nil) {
@@ -107,7 +112,7 @@
     
     NSURL *url = [self urlForCity:city];
     
-    [self doGet:url success:^(NSURLResponse *response, NSData *data) {
+    [self doGet:url resourceType:ResourceTypeJson success:^(NSURLResponse *response, NSData *data) {
         NSError *parsingError = nil;
         NSDictionary* jsonDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&parsingError];
         if (parsingError) {
