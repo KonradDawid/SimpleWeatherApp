@@ -11,9 +11,6 @@
 #import "AppStyle.h"
 
 @interface ForecastCollectionViewCell ()
-@property (nonatomic, strong) UILabel* hourLabel;
-@property (nonatomic, strong) UILabel *weatherDescLabel;
-@property (nonatomic, strong) UILabel *temperatureLabel;
 @end
 
 @implementation ForecastCollectionViewCell
@@ -62,12 +59,6 @@
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_temperatureLabel attribute:NSLayoutAttributeCenterX relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterX multiplier:1 constant:0]];
     [self.contentView addConstraints:
      [NSLayoutConstraint constraintsWithVisualFormat:@"V:[_temperatureLabel]-10-|" options:0 metrics:nil views:viewsDictionary]];
-}
-
-- (void)configureWithForecast: (Forecast*)forecast dateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter {
-    self.hourLabel.text = [dateFormatter stringFromDate:forecast.hour];
-    self.temperatureLabel.text = [NSString stringWithFormat:@"%@%@", [numberFormatter stringFromNumber:forecast.temperature], @"°C"];
-    self.weatherDescLabel.text = forecast.weatherDesc?:@"";
 }
 
 -(void)prepareForReuse{

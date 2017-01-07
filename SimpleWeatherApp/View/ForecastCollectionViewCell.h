@@ -10,6 +10,8 @@
 @class Forecast;
 
 @interface ForecastCollectionViewCell : UICollectionViewCell
+@property (nonatomic, strong) UILabel* hourLabel;
+@property (nonatomic, strong) UILabel *weatherDescLabel;
+@property (nonatomic, strong) UILabel *temperatureLabel;
 @property (nonatomic, strong) UIImageView* imageView;
-- (void)configureWithForecast: (Forecast*)forecast dateFormatter:(NSDateFormatter*)dateFormatter numberFormatter:(NSNumberFormatter*)numberFormatter;
 @end

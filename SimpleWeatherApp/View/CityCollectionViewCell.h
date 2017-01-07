@@ -10,5 +10,5 @@
 @class City;
 
 @interface CityCollectionViewCell : UICollectionViewCell
-- (void)configureWithCity: (City*)city;
+@property (nonatomic, strong) UILabel *nameLabel;
 @end

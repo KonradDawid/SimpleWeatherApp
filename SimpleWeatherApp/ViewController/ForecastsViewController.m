@@ -75,9 +75,15 @@ static CGFloat const cellHeight = 150.0f;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     ForecastCollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:forecastCellIdentifier forIndexPath: indexPath];
-    Forecast *forecast = self.forecasts[indexPath.section];
-    [cell configureWithForecast:forecast dateFormatter:self.dateFormatter numberFormatter:self.numberFormatter];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
     return cell;
+}
+
+- (void)configureCell:(ForecastCollectionViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    Forecast *forecast = self.forecasts[indexPath.section];
+    cell.hourLabel.text = [self.dateFormatter stringFromDate:forecast.hour];
+    cell.temperatureLabel.text = [NSString stringWithFormat:@"%@%@", [self.numberFormatter stringFromNumber:forecast.temperature], @"°C"];
+    cell.weatherDescLabel.text = forecast.weatherDesc?:@"";
 }
 
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {

@@ -11,7 +11,6 @@
 #import "AppStyle.h"
 
 @interface CityCollectionViewCell ()
-@property (nonatomic, strong) UILabel *nameLabel;
 @end
 
 @implementation CityCollectionViewCell
@@ -25,10 +24,6 @@
         [self setupLayout];
     }
     return self;
-}
-
-- (void)configureWithCity: (City*)city {
-    self.nameLabel.text = city.name?:@"";
 }
 
 - (void)setupView {

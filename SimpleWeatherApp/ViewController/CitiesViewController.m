@@ -93,9 +93,13 @@ static CGFloat const cellHeight = 100.0f;
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)cv cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     CityCollectionViewCell *cell = [cv dequeueReusableCellWithReuseIdentifier:cityCellIdentifier forIndexPath: indexPath];
-    City *city = [self.citiesManager getCities][indexPath.section];
-    [cell configureWithCity:city];
+    [self configureCell:cell forRowAtIndexPath:indexPath];
     return cell;
+}
+
+- (void)configureCell:(CityCollectionViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
+    City *city = [self.citiesManager getCities][indexPath.section];
+    cell.nameLabel.text = city.name?:@"";
 }
 
 #pragma mark - UIScrollView Delegate
